@@ -248,9 +248,9 @@ def run(
 
     # save result array to .txt file
     # np.savetxt('pre.txt', np.array(pre_array))
-    with open('pre.txt', 'a') as f:
+    with open('pre.txt', 'w') as f:
         for line in pre_array:
-            s = str(line[0]) + ' ' + str(line[1]) + ' ' + str(line[2])
+            s = str(line[0]) + '  ' + str(line[1]) + '  ' + str(line[2])
             f.write(s + '\n')
     # Print results
     t = tuple(x / seen * 1E3 for x in dt)  # speeds per image
@@ -268,7 +268,7 @@ def parse_opt():
     parser.add_argument('--source', type=str, default=ROOT / 'test', help='file/dir/URL/glob, 0 for webcam')
     parser.add_argument('--data', type=str, default=ROOT / 'data/coco128.yaml', help='(optional) dataset.yaml path')
     parser.add_argument('--imgsz', '--img', '--img-size', nargs='+', type=int, default=[640], help='inference size h,w')
-    parser.add_argument('--conf-thres', type=float, default=0.25, help='confidence threshold')
+    parser.add_argument('--conf-thres', type=float, default=0.1, help='confidence threshold')
     parser.add_argument('--iou-thres', type=float, default=0.45, help='NMS IoU threshold')
     parser.add_argument('--max-det', type=int, default=1000, help='maximum detections per image')
     parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')

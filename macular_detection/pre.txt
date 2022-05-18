@@ -1,0 +1,10 @@
+C:\Users\HP\Documents\GitHub\NEU-CV-TrainProject\macular_detection\test\0001  735.5  1015.0
+C:\Users\HP\Documents\GitHub\NEU-CV-TrainProject\macular_detection\test\0002  760.0  1010.0
+C:\Users\HP\Documents\GitHub\NEU-CV-TrainProject\macular_detection\test\0003  1465.0  1035.5
+C:\Users\HP\Documents\GitHub\NEU-CV-TrainProject\macular_detection\test\0004  1655.0  1097.0
+C:\Users\HP\Documents\GitHub\NEU-CV-TrainProject\macular_detection\test\0005  1720.0  1108.0
+C:\Users\HP\Documents\GitHub\NEU-CV-TrainProject\macular_detection\test\0006  725.5  1018.5
+C:\Users\HP\Documents\GitHub\NEU-CV-TrainProject\macular_detection\test\0007  1291.5  1073.5
+C:\Users\HP\Documents\GitHub\NEU-CV-TrainProject\macular_detection\test\0008  1659.5  1065.5
+C:\Users\HP\Documents\GitHub\NEU-CV-TrainProject\macular_detection\test\0009  1440.0  1044.0
+C:\Users\HP\Documents\GitHub\NEU-CV-TrainProject\macular_detection\test\0010  1524.0  1104.5
