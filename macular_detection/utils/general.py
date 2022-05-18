@@ -14,6 +14,7 @@ import random
 import re
 import shutil
 import signal
+import threading
 import time
 import urllib
 from datetime import datetime
@@ -83,7 +84,7 @@ def set_logging(name=None, verbose=VERBOSE):
         for h in logging.root.handlers:
             logging.root.removeHandler(h)  # remove all handlers associated with the root logger object
     rank = int(os.getenv('RANK', -1))  # rank in world for Multi-GPU trainings
-    level = logging.INFO if (verbose and rank in (-1, 0)) else logging.WARNING
+    level = logging.INFO if verbose and rank in {-1, 0} else logging.WARNING
     log = logging.getLogger(name)
     log.setLevel(level)
     handler = logging.StreamHandler()
@@ -167,6 +168,16 @@ def try_except(func):
     return handler
 
 
+def threaded(func):
+    # Multi-threads a target function and returns thread. Usage: @threaded decorator
+    def wrapper(*args, **kwargs):
+        thread = threading.Thread(target=func, args=args, kwargs=kwargs, daemon=True)
+        thread.start()
+        return thread
+
+    return wrapper
+
+
 def methods(instance):
     # Get class/instance methods
     return [f for f in dir(instance) if callable(getattr(instance, f)) and not f.startswith("__")]
@@ -245,7 +256,7 @@ def file_age(path=__file__):
     return dt.days  # + dt.seconds / 86400  # fractional days
 
 
-def file_update_date(path=__file__):
+def file_date(path=__file__):
     # Return human-readable file modification date, i.e. '2021-3-26'
     t = datetime.fromtimestamp(Path(path).stat().st_mtime)
     return f'{t.year}-{t.month}-{t.day}'
@@ -467,7 +478,7 @@ def check_dataset(data, autodownload=True):
     if val:
         val = [Path(x).resolve() for x in (val if isinstance(val, list) else [val])]  # val path
         if not all(x.exists() for x in val):
-            LOGGER.info(emojis('\nDataset not found ⚠️, missing paths %s' % [str(x) for x in val if not x.exists()]))
+            LOGGER.info(emojis('\nDataset not found ⚠, missing paths %s' % [str(x) for x in val if not x.exists()]))
             if s and autodownload:  # download script
                 t = time.time()
                 root = path.parent if 'path' in data else '..'  # unzip directory i.e. '../'
@@ -933,13 +944,24 @@ def increment_path(path, exist_ok=False, sep='', mkdir=False):
     path = Path(path)  # os-agnostic
     if path.exists() and not exist_ok:
         path, suffix = (path.with_suffix(''), path.suffix) if path.is_file() else (path, '')
-        dirs = glob.glob(f"{path}{sep}*")  # similar paths
-        matches = [re.search(rf"%s{sep}(\d+)" % path.stem, d) for d in dirs]
-        i = [int(m.groups()[0]) for m in matches if m]  # indices
-        n = max(i) + 1 if i else 2  # increment number
-        path = Path(f"{path}{sep}{n}{suffix}")  # increment path
+
+        # Method 1
+        for n in range(2, 9999):
+            p = f'{path}{sep}{n}{suffix}'  # increment path
+            if not os.path.exists(p):  #
+                break
+        path = Path(p)
+
+        # Method 2 (deprecated)
+        # dirs = glob.glob(f"{path}{sep}*")  # similar paths
+        # matches = [re.search(rf"{path.stem}{sep}(\d+)", d) for d in dirs]
+        # i = [int(m.groups()[0]) for m in matches if m]  # indices
+        # n = max(i) + 1 if i else 2  # increment number
+        # path = Path(f"{path}{sep}{n}{suffix}")  # increment path
+
     if mkdir:
         path.mkdir(parents=True, exist_ok=True)  # make directory
+
     return path
 
 

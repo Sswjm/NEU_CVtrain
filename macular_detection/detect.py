@@ -250,7 +250,7 @@ def run(
     # np.savetxt('pre.txt', np.array(pre_array))
     with open('pre.txt', 'a') as f:
         for line in pre_array:
-            s = str(line[0]) + str(line[1]) + str(line[2])
+            s = str(line[0]) + ' ' + str(line[1]) + ' ' + str(line[2])
             f.write(s + '\n')
     # Print results
     t = tuple(x / seen * 1E3 for x in dt)  # speeds per image
