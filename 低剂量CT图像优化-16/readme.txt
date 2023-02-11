@@ -1,0 +1,2 @@
+去噪后图像位于test_results
+预处理及测试代码位于preprocess.ipynb

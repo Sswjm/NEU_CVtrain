@@ -1,0 +1,7 @@
+添加包：pip install -r requirements.txt
+
+运行可视化界面：python window.py 输入文件路径即可
+
+控制台预测结果：python test.py --test_path test， test文件夹默认位于当前目录下
+
+预测结果保存在result目录下，与test根目录相同
